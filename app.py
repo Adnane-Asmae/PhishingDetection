@@ -352,27 +352,46 @@ def get_theme_css(theme):
         }}
 
         /* =========================================================
-           REMOVE "VIDE RECTANGLES" (empty dark horizontal stripes)
-           - Keep Streamlit's real widget backgrounds (radios, buttons,
-             st.info / st.success boxes, etc.) — do NOT blanket-transparent
-             every child div, because that hides the radio circles.
-           - Only target Streamlit's auto-inserted WRAPPER divs that apply
-             alternating-row or "spacer" backgrounds between sections.
-           - Also remove empty 1-2px gap divs Streamlit injects.
+           REMOVE ALL DARK RECTANGLE BANDS IN SIDEBAR
+           Aggressive targeting to strip ALL wrapper backgrounds
            ========================================================= */
 
-        /* Reset Streamlit's per-wrapper alternating row background */
-        [data-testid="stVerticalBlockBorderWrapper"],
-        [data-testid="stVerticalBlockBorderWrapper"] > div,
-        [data-testid="stColumn"] > div:first-child,
-        [data-testid="stHorizontalBlock"] > div:first-child {{
+        /* Sidebar: strip ALL wrapper div backgrounds — every single level */
+        section[data-testid="stSidebar"] > div,
+        section[data-testid="stSidebar"] > div > div,
+        section[data-testid="stSidebar"] > div > div > div,
+        section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] > div,
+        section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] > div > div,
+        section[data-testid="stSidebar"] div[data-testid="stSidebarUserContent"] > div,
+        section[data-testid="stSidebar"] div[data-testid="stSidebarUserContent"] > div > div,
+        section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"],
+        section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div,
+        section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div > div,
+        [data-testid="stSidebarUserContent"] [data-testid="stVerticalBlockBorderWrapper"],
+        [data-testid="stSidebarUserContent"] [data-testid="stVerticalBlockBorderWrapper"] > div,
+        [data-testid="stSidebarUserContent"] [data-testid="stVerticalBlockBorderWrapper"] > div > div,
+        [data-testid="stSidebarUserContent"] [data-testid="stVerticalBlockBorderWrapper"] > div > div > div,
+        [data-testid="stSidebarUserContent"] [data-testid="stVerticalBlockBorderWrapper"] > div > div > div > div {{
+            background-color: transparent !important;
+            background: transparent !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            border: none !important;
+            outline: none !important;
+        }}
+
+        /* Also target the column / horizontal block wrappers inside sidebar */
+        section[data-testid="stSidebar"] [data-testid="stColumn"] > div,
+        section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] > div,
+        section[data-testid="stSidebar"] [data-testid="stColumn"] > div:first-child,
+        section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] > div:first-child {{
             background-color: transparent !important;
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
         }}
 
-        /* Hide genuinely empty divs (Streamlit's separator injects <div></div>) */
+        /* Hide genuinely empty divs */
         section[data-testid="stSidebar"] div:empty,
         [data-testid="stSidebarUserContent"] div:empty,
         [data-testid="stVerticalBlock"] > div:empty,
@@ -385,10 +404,114 @@ def get_theme_css(theme):
             border: 0 !important;
         }}
 
-        /* Collapse excessive top padding on sidebar user-content block
-           (this often creates a dark gap above the first widget) */
+        /* Remove excessive top padding on sidebar */
         [data-testid="stSidebarUserContent"] {{
-            padding-top: 0.25rem !important;
+            padding-top: 0rem !important;
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }}
+
+        /* Sidebar title — clean with no dark band */
+        .sidebar-title {{
+            font-size: 28px;
+            font-weight: 700;
+            padding: 20px 16px 16px 16px;
+            margin: 0 -0.75rem 0 -0.75rem;
+            background-color: {p['surface']} !important;
+            border-bottom: 1px solid {p['border']} !important;
+            color: {p['text']} !important;
+            letter-spacing: -0.01em;
+        }}
+
+        /* Sidebar section header */
+        .sidebar-section-header {{
+            font-size: 17px;
+            font-weight: 700;
+            color: {p['text']} !important;
+            padding: 12px 4px 8px 4px;
+            margin: 0;
+            letter-spacing: -0.005em;
+        }}
+
+        /* Sidebar text (about description etc.) */
+        .sidebar-text {{
+            font-size: 14px;
+            line-height: 1.6;
+            color: {p['text']} !important;
+            padding: 0 4px 4px 4px;
+            margin: 0 0 4px 0;
+        }}
+
+        /* Sidebar label text */
+        .sidebar-label {{
+            font-size: 13px;
+            font-weight: 600;
+            color: {p['text_muted']} !important;
+            padding: 8px 4px 6px 4px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }}
+
+        /* Premium sidebar info card — Random Forest, etc. */
+        .sidebar-info-card {{
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 4px 4px 8px 4px;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid {p['border']} !important;
+            background-color: {p['info_bg']} !important;
+            color: {p['text']} !important;
+        }}
+
+        /* Premium sidebar success card — accuracy */
+        .sidebar-success-card {{
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 4px 4px 8px 4px;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid {p['success_bd']} !important;
+            background-color: {p['success_bg']} !important;
+            color: {p['text']} !important;
+        }}
+
+        /* Sidebar divider (clean) */
+        .sidebar-divider {{
+            margin: 12px -0.75rem 12px -0.75rem;
+            border: none;
+            border-top: 1px solid {p['border']} !important;
+            height: 1px;
+        }}
+
+        /* Radio button container — remove dark band behind it */
+        section[data-testid="stSidebar"] div[role="radiogroup"] {{
+            background-color: {p['surface']} !important;
+            border-radius: 10px;
+            padding: 8px;
+            margin: 4px 4px 8px 4px;
+            border: 1px solid {p['border']} !important;
+        }}
+
+        section[data-testid="stSidebar"] div[data-baseweb="radio"] {{
+            background-color: transparent !important;
+        }}
+        section[data-testid="stSidebar"] div[data-baseweb="radio"] div[role="radio"] {{
+            background-color: transparent !important;
+        }}
+        section[data-testid="stSidebar"] div[data-baseweb="radio"] div[role="radio"][aria-checked="true"]::after,
+        section[data-testid="stSidebar"] div[data-baseweb="radio"] div[role="radio"] svg {{
+            opacity: 1 !important;
         }}
 
         /* Collapse excessive vertical spacing around st.markdown("---") HR */
@@ -397,30 +520,45 @@ def get_theme_css(theme):
             margin-bottom: 0.5rem !important;
         }}
 
-        /* Remove box-shadows on alert / info boxes (keeps borders clean,
-           but preserves their colored backgrounds) */
+        /* Alert / info boxes — clean borders, exact fit padding */
         div[data-testid="stAlert"] {{
             box-shadow: none !important;
+            border-radius: 12px !important;
+            padding: 12px 16px !important;
         }}
 
-        /* --- RADIO CIRCLES VISIBILITY (must NOT be transparent) --- */
-        div[data-baseweb="radio"] {{
-            background-color: transparent !important;
-        }}
-        /* Make the radio circle itself pop — outer ring + inner dot
-           inherit BaseWeb defaults but remove any conflicting bg override */
-        div[data-baseweb="radio"] div[role="radio"] {{
-            background-color: transparent !important;
-        }}
-        div[data-baseweb="radio"] div[role="radio"][aria-checked="true"]::after,
-        div[data-baseweb="radio"] div[role="radio"] svg {{
-            /* keep checked dot visible */
-            opacity: 1 !important;
+        /* =========================================================
+           REMOVE TOP BLACK HEADER BANNER (Streamlit Deploy bar)
+           ========================================================= */
+        header[data-testid="stHeader"],
+        [data-testid="stHeader"],
+        div[data-testid="stToolbar"],
+        section[data-testid="stSidebarHeader"],
+        [data-testid="stSidebarHeader"],
+        [data-testid="stSidebarCollapsedControl"] {{
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }}
 
-        /* Ensure horizontal radio wrapper doesn't add a dark band */
-        div[role="radiogroup"] {{
-            background-color: transparent !important;
+        /* Remove top gap after hiding header */
+        .block-container,
+        [data-testid="stMainBlockContainer"],
+        section.main {{
+            padding-top: 2rem !important;
+        }}
+        [data-testid="stAppViewContainer"] {{
+            top: 0 !important;
+        }}
+        [data-testid="stSidebar"] {{
+            top: 0 !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
         }}
 
     </style>
@@ -583,11 +721,20 @@ st.markdown(
 
 with st.sidebar:
 
-    st.title("🛡️ Phishing Detector")
+    st.markdown(
+        '<div class="sidebar-title">🛡️ Phishing Detector</div>',
+        unsafe_allow_html=True
+    )
 
-    st.markdown("---")
+    st.markdown(
+        '<hr class="sidebar-divider">',
+        unsafe_allow_html=True
+    )
 
-    st.write("### Appearance")
+    st.markdown(
+        '<div class="sidebar-section-header">Appearance</div>',
+        unsafe_allow_html=True
+    )
 
     st.radio(
         "Theme",
@@ -599,37 +746,70 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    # Defensive sync: if user changed radio, force a rerun so CSS
-    # re-applies IMMEDIATELY without waiting for next interaction.
     if st.session_state.theme_picker != st.session_state.theme:
         st.session_state.theme = st.session_state.theme_picker
         st.rerun()
 
-    st.markdown("---")
-
-    st.write("### About")
-
-    st.write(
-        "This application uses a Machine Learning "
-        "Random Forest classifier to detect potentially "
-        "phishing websites based on web page features."
+    st.markdown(
+        '<hr class="sidebar-divider">',
+        unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    st.markdown(
+        '<div class="sidebar-section-header">About</div>',
+        unsafe_allow_html=True
+    )
 
-    st.write("### Model")
+    st.markdown(
+        '<div class="sidebar-text">'
+        'This application uses a Machine Learning '
+        'Random Forest classifier to detect potentially '
+        'phishing websites based on web page features.'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
-    st.info("🌲 Random Forest")
+    st.markdown(
+        '<hr class="sidebar-divider">',
+        unsafe_allow_html=True
+    )
 
-    st.write("Accuracy")
+    st.markdown(
+        '<div class="sidebar-section-header">Model</div>',
+        unsafe_allow_html=True
+    )
 
-    st.success("96.5%")
+    st.markdown(
+        '<div class="sidebar-info-card">🌲 <span>Random Forest</span></div>',
+        unsafe_allow_html=True
+    )
 
-    st.markdown("---")
+    st.markdown(
+        '<div class="sidebar-label">Accuracy</div>',
+        unsafe_allow_html=True
+    )
 
-    st.write("### Model Input")
+    st.markdown(
+        '<div class="sidebar-success-card">96.5%</div>',
+        unsafe_allow_html=True
+    )
 
-    st.info(f"{len(feature_names)} numerical features")
+    st.markdown(
+        '<hr class="sidebar-divider">',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="sidebar-section-header">Model Input</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f'<div class="sidebar-info-card">'
+        f'🔢 <span>{len(feature_names)} numerical features</span>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
 
 # ============================================================
