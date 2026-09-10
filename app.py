@@ -818,7 +818,7 @@ with st.sidebar:
 
 st.markdown(
     '<div class="main-title">'
-    '🛡️ Phishing Website Detection'
+    'Phishing Website Detection'
     '</div>',
     unsafe_allow_html=True
 )
@@ -838,21 +838,14 @@ st.markdown(
 
 st.markdown("---")
 
-st.header("🔍 Test a Website")
+st.header("Test a Website")
 
 st.write(
     "Enter the characteristics of the website below "
     "and let the model analyze it."
 )
 
-st.info(
-    "📋 **Simplified Manual Test** — This demonstration interface "
-    "shows 8 key features for quick manual testing. The remaining "
-    f"{len(feature_names) - len(important_features)} model features "
-    "are set to zero for this section. This is a simplified demo, "
-    "not a complete representation of all model inputs. "
-    "Use Section 2 below for a complete test with all real features."
-)
+
 
 
 # ============================================================
@@ -886,7 +879,7 @@ for i, feature in enumerate(important_features):
 st.markdown("---")
 
 predict_button_1 = st.button(
-    "🔍 Analyze Website",
+    "Analyze Website",
     use_container_width=True,
     type="primary"
 )
@@ -939,7 +932,7 @@ if predict_button_1:
 
     st.markdown("---")
 
-    st.subheader("📊 Prediction Result")
+    st.subheader("Prediction Result")
 
     result_col1_1, result_col2_1 = st.columns(2)
 
@@ -1005,7 +998,7 @@ if predict_button_1:
 
 st.markdown("---")
 
-st.header("🧪 Test with a Dataset Observation")
+st.header("Test with a Dataset Observation")
 
 st.write(
     "Test the existing Random Forest model using "
@@ -1014,12 +1007,7 @@ st.write(
     "to the model exactly as trained."
 )
 
-st.info(
-    "💡 This section is the important demonstration mode. "
-    "It uses real values from the actual dataset and allows "
-    "you to show both a correctly classified legitimate "
-    "example and a correctly classified phishing example."
-)
+
 
 
 # ============================================================
@@ -1286,7 +1274,7 @@ else:
             conf_label = "Low / Uncertain Confidence"
 
         with st.expander(
-            f"📖 Model Confidence Explanation — {conf_label}"
+            f"Model Confidence Explanation — {conf_label}"
         ):
             st.write(
                 f"The model assigns a confidence of **{confidence:.2%}** "
